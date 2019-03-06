@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- no, id, name, password, join_date -->
+<mapper namespace="category">
+	<insert id="defaultCategory" parameterType="Long">
+		<![CDATA[
+			insert into category values(null, '미분류', '미분류', now(), #{userNo })
+		]]>
+	</insert>
+	<select id="getList" parameterType="Long" resultType="categoryvo">
+		<![CDATA[
+			select 	c.no, c.name, c.comment, c.reg_date as regDate, c.user_no as userNo, count(p.no) as postCount
+			from 	category c, post p
+			where 	c.no = p.category_no
+			group by user_no
+			having user_no = #{userNo };
+		]]>
+	</select>
+</mapper>
