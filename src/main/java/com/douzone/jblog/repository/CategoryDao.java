@@ -19,4 +19,16 @@ public class CategoryDao {
 	public List<CategoryVo> getList(long userNo) {
 		return sqlSession.selectList("category.getList", userNo);
 	}
+	public void insert(CategoryVo categoryVo) {
+		sqlSession.insert("category.insert", categoryVo);
+	}
+	public Long countPost(Long categoryNo) {
+		return sqlSession.selectOne("category.countPost", categoryNo);
+	}
+	public void delete(Long categoryNo) {
+		sqlSession.delete("category.delete", categoryNo);
+	}
+	public long getNo(CategoryVo categoryVo) {
+		return sqlSession.selectOne("category.getNo", categoryVo);
+	}
 }

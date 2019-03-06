@@ -7,34 +7,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
-<Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1>Spring 이야기</h1>
-			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
-			</ul>
-		</div>
+		<c:import url="/WEB-INF/views/include/blog-header.jsp"/>
+		
 		<div id="wrapper">
 			<div id="content" class="full-screen">
-				<ul class="admin-menu">
-					<li><a href="">기본설정</a></li>
-					<li><a href="">카테고리</a></li>
-					<li class="selected">글작성</li>
-				</ul>
-				<form action="" method="post">
+				<c:import url="/WEB-INF/views/include/blog-mid-header.jsp" >
+					<c:param name="menu" value="write"/>
+				</c:import>
+				
+				<form action="${pageContext.request.contextPath}/${authUser.id }/admin/write" method="post">
 			      	<table class="admin-cat-write">
 			      		<tr>
 			      			<td class="t">제목</td>
 			      			<td>
 			      				<input type="text" size="60" name="title">
 				      			<select name="category">
-				      				<option>미분류</option>
-				      				<option>자바</option>
+				      				<c:forEach items="${categoryList }" var="vo">
+				      					<option>${vo.name }</option>
+				      				</c:forEach>
 				      			</select>
 				      		</td>
 			      		</tr>

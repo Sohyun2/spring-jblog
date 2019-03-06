@@ -15,11 +15,8 @@
 		
 		<div id="wrapper">
 			<div id="content" class="full-screen">
-				<ul class="admin-menu">
-					<li class="selected">기본설정</li>
-					<li><a href="${pageContext.request.contextPath}/${authUser.id }/admin/category">카테고리</a></li>
-					<li><a href="">글작성</a></li>
-				</ul>
+				<c:import url="/WEB-INF/views/include/blog-mid-header.jsp"/>
+				
 				<form action="${pageContext.request.contextPath}/${authUser.id }/admin/update" method="post" enctype="multipart/form-data">
 	 		      	<table class="admin-config">
 			      		<tr>

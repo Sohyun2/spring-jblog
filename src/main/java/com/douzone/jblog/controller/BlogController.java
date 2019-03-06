@@ -19,8 +19,10 @@ import com.douzone.dto.JSONResult;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.service.CategoryService;
 import com.douzone.jblog.service.FileUploadService;
+import com.douzone.jblog.service.PostService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.PostVo;
 
 @Controller
 @RequestMapping("/{id:(?!assets).*}") // 정규표현식 기입해준거임..
@@ -34,6 +36,8 @@ public class BlogController {
 	private BlogService blogService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private PostService postService;
 
 	@RequestMapping({ "", "/{category}","/{category}/{post}" })
 	public String mappingParameter(
@@ -96,7 +100,7 @@ public class BlogController {
 	
 	@ResponseBody
 	@RequestMapping("/admin/category/list")
-	public JSONResult adminCategory(@PathVariable("id") String id) {
+	public JSONResult categoryList(@PathVariable("id") String id) {
 		System.out.println("/admin/category..POST");
 		
 		// authUser id가 가지고 있는 categoryList를 가지고 가기
@@ -110,10 +114,60 @@ public class BlogController {
 		}
 		
 		return JSONResult.success(list);
-		//return null;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/admin/category/insert", method=RequestMethod.POST)
+	public JSONResult categoryInsert(@PathVariable("id") String id,
+			@RequestParam("name") String name,
+			@RequestParam("comment") String comment) {
+		System.out.println("/admin/category/insert..POST");
+		
+		CategoryVo categoryVo = new CategoryVo();
+		categoryVo.setName(name);
+		categoryVo.setComment(comment);
+		
+		categoryVo = categoryService.insert(id, categoryVo);
+		System.out.println(categoryVo);
+		
+		return JSONResult.success(categoryVo);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/category/delete", method=RequestMethod.POST)
+	public JSONResult categoryDelete(@PathVariable("id") String id, @RequestParam("no") Long categoryNo) {
+		System.out.println("/admin/category/delete..POST");
+		System.out.println(categoryNo);
+		// post 갯수 확인..
+		boolean data = categoryService.delete(categoryNo);
+		
+		return JSONResult.success(data);
+	}
+	
+	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
+	public String write(@PathVariable("id") String userId, Model model) {
+		System.out.println("/admin/write..GET");
+		
+		//category
+		List<CategoryVo> list = categoryService.getList(userId);
+		model.addAttribute("categoryList", list);
+		
+		
+		return urlMapped(userId, "/blog/blog-admin-write", model);
+	}
 
+	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
+	public String write(@PathVariable("id") String userId,
+			@ModelAttribute PostVo postVo,
+			@RequestParam("category") String category,
+			Model model) {
+		System.out.println("/admin/write..POST");
+				
+		postService.insert(postVo, category, userId);
+		
+		return urlMapped(userId, "blog/blog-main", model);
+	}
+	
 	public String urlMapped(String id, String viewName, Model model) { // parameter는 접속할 블로그 user의 id
 		BlogVo vo = blogService.getBlogInfo(id);
 		System.out.println(vo);

@@ -36,4 +36,8 @@ public class UserService {
 		return userDao.login(userVo);
 	}
 
+	public long getNo(String userId) {
+		return userDao.getNo(userId);
+	}
+
 }
