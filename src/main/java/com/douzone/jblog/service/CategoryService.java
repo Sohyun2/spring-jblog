@@ -58,4 +58,9 @@ public class CategoryService {
 		
 	}
 
+	public long getLastCategoryNo(String userId) {
+		long userNo = userService.getNo(userId);
+		return categoryDao.getLastCategoryNo(userNo);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.douzone.jblog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,22 +47,40 @@ public class BlogController {
 			@PathVariable Optional<Long> post,
 			Model model) {
 		
+		long categoryNo = 0;		
+
+		// category 비교
+		if(category.isPresent()) {
+			categoryNo = category.get(); // url로 넘어온 categoryNo 받아오기			
+		} else {
+			// 제일 최근에 만들어진 카테고리 no가져오기
+			categoryNo = categoryService.getLastCategoryNo(id);
+			System.out.println("마지막 카테고리 no>> " + categoryNo);
+		}
+		
 		// post비교
 		if(post.isPresent()) {
 			//postDao.
 		} else {
-			// default setting -> post desc 1번 글
+			// 메인 글을 뿌리기 위해서
+			// 제일 최근에 만들어진 카테고리의 제일 최근에 적힌 post 가져오기
+			PostVo postVo = new PostVo();
+			postVo = postService.getLastPost(categoryNo); // 마지막 글 가져오기
+			model.addAttribute("lastPost", postVo);
+			System.out.println("카테고리 최근 추가 글 >> " + postVo);
 			
+			// 하단 리스트 뿌리기 위해서
+			// 제일 최근에 만들어진 카테고리 리스트 뽑아오기
+			List<PostVo> postList = postService.getList(categoryNo);
+			model.addAttribute("postList", postList);
+			System.out.println("카테고리 post list>> " + postList);	
 		}
 		
-		// category 비교
-		if(category.isPresent()) {
-			//cateGoryDao.
-		} else {
-			// default setting -> 미분류 카데고리
-		}
 		
 		if (!id.isEmpty()) { // id가 있다면..
+			// 카테고리 리스트 뽑기 // 공통적으로 있어야할 부분
+			List<CategoryVo> categoryList = categoryService.getList(id);
+			model.addAttribute("categoryList", categoryList);
 			
 			return urlMapped(id, "blog/blog-main", model);
 		}

@@ -44,4 +44,9 @@
 			select no from category where name = #{name } and user_no = #{userNo }
 		]]>
 	</select>
+	<select id="getLastCategoryNo" parameterType="Long" resultType="Long">
+		<![CDATA[
+			select no from category where user_no = #{userNo } order by no desc limit 1
+		]]>
+	</select>
 </mapper>

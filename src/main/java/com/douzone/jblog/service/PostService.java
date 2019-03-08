@@ -1,5 +1,7 @@
 package com.douzone.jblog.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,15 @@ public class PostService {
 		postVo.setCategoryNo(categoryNo);
 		
 		postDao.insert(postVo);
+	}
+
+	public PostVo getLastPost(long lastCategoryNo) {
+		//long lastPostNo = postDao.getLastPostNo(lastCategoryNo);
+		
+		return postDao.getLastPost(lastCategoryNo);
+	}
+
+	public List<PostVo> getList(long categoryNo) {
+		return postDao.getList(categoryNo);
 	}
 }

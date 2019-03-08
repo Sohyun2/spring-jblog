@@ -31,4 +31,7 @@ public class CategoryDao {
 	public long getNo(CategoryVo categoryVo) {
 		return sqlSession.selectOne("category.getNo", categoryVo);
 	}
+	public long getLastCategoryNo(Long userNo) {
+		return sqlSession.selectOne("category.getLastCategoryNo", userNo);
+	}
 }
