@@ -17,10 +17,6 @@ public class PostDao {
 	public void insert(PostVo postVo) {
 		sqlSession.insert("post.insert", postVo);
 	}
-
-//	public long getLastPostNo(Long lastCategoryNo) {
-//		return sqlSession.selectOne("post.getLastPostNo", lastCategoryNo);
-//	}
 	
 	public PostVo getLastPost(Long lastCategoryNo) {
 		return sqlSession.selectOne("post.getLastPost", lastCategoryNo);
@@ -28,5 +24,9 @@ public class PostDao {
 
 	public List<PostVo> getList(long categoryNo) {
 		return sqlSession.selectList("post.getList", categoryNo);
+	}
+
+	public PostVo getPost(long postNo) {
+		return sqlSession.selectOne("post.getPost", postNo);
 	}
 }

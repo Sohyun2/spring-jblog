@@ -25,11 +25,14 @@ public class PostService {
 
 	public PostVo getLastPost(long lastCategoryNo) {
 		//long lastPostNo = postDao.getLastPostNo(lastCategoryNo);
-		
 		return postDao.getLastPost(lastCategoryNo);
 	}
 
 	public List<PostVo> getList(long categoryNo) {
 		return postDao.getList(categoryNo);
+	}
+
+	public PostVo getPost(long postNo) {
+		return postDao.getPost(postNo);
 	}
 }

@@ -15,14 +15,22 @@
 		<div id="wrapper">
 			<div id="content">
 				<div class="blog-content">
-					<h4>${lastPost.title }</h4>
-					<p>
-						${lastPost.content }
-					<p>
+					<c:choose>
+						<c:when test="${empty post }">
+							<p>등록된 게시글이 없습니다.</p>
+						</c:when>
+						<c:otherwise>
+							<h4>${post.title }</h4>
+							<p>
+								${post.content }
+							<p>
+						</c:otherwise>
+					</c:choose>
+					
 				</div>
 				<ul class="blog-list">
 					<c:forEach items="${postList }" var="vo">
-						<li><a href="">${vo.title }</a> <span>${vo.regDate }</span>	</li>
+						<li><a href="${pageContext.request.contextPath}/${blogUserId }/${vo.categoryNo }/${vo.no }">${vo.title }</a> <span>${vo.regDate }</span>	</li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -44,11 +52,7 @@
 			</ul>
 		</div>
 		
-		<div id="footer">
-			<p>
-				<strong>${blogVo.title }</strong> is powered by JBlog (c)2016
-			</p>
-		</div>
+		<c:import url="/WEB-INF/views/include/blog-footer.jsp"/>
 	</div>
 </body>
 </html>

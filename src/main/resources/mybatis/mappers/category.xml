@@ -13,7 +13,8 @@
 			select 	c.no, c.name, c.comment, c.reg_date as regDate, c.user_no as userNo, count(p.no) as postCount
 			from 	category c left outer join post p on p.category_no = c.no
 			where 	c.user_no = #{useNo }
-			group by c.no;
+			group by c.no
+			order by no desc
 		]]>
 	</select>
 	<insert id="insert" parameterType="categoryvo">

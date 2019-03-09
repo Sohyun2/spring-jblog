@@ -40,4 +40,8 @@ public class UserService {
 		return userDao.getNo(userId);
 	}
 
+	public boolean existEmail(String id) {
+		UserVo userVo = userDao.get(id);
+		return userVo != null;
+	}
 }

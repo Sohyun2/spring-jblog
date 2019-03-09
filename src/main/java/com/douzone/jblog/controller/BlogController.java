@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.douzone.dto.JSONResult;
 import com.douzone.jblog.service.BlogService;
@@ -58,34 +57,36 @@ public class BlogController {
 			System.out.println("마지막 카테고리 no>> " + categoryNo);
 		}
 		
+		//PostVo postVo = null;		
 		// post비교
 		if(post.isPresent()) {
-			//postDao.
+			long postNo = post.get();
+			PostVo postVo = postService.getPost(postNo);
+			model.addAttribute("post", postVo);
+			System.out.println("post가져오기>>" + postVo);
 		} else {
 			// 메인 글을 뿌리기 위해서
 			// 제일 최근에 만들어진 카테고리의 제일 최근에 적힌 post 가져오기
-			PostVo postVo = new PostVo();
-			postVo = postService.getLastPost(categoryNo); // 마지막 글 가져오기
-			model.addAttribute("lastPost", postVo);
-			System.out.println("카테고리 최근 추가 글 >> " + postVo);
-			
-			// 하단 리스트 뿌리기 위해서
-			// 제일 최근에 만들어진 카테고리 리스트 뽑아오기
-			List<PostVo> postList = postService.getList(categoryNo);
-			model.addAttribute("postList", postList);
-			System.out.println("카테고리 post list>> " + postList);	
+			PostVo postVo  = postService.getLastPost(categoryNo); // 마지막 글 가져오기
+			model.addAttribute("post", postVo);
+			System.out.println("카테고리 최근 추가 글 >> " + postVo);			
 		}
-		
 		
 		if (!id.isEmpty()) { // id가 있다면..
 			// 카테고리 리스트 뽑기 // 공통적으로 있어야할 부분
 			List<CategoryVo> categoryList = categoryService.getList(id);
 			model.addAttribute("categoryList", categoryList);
+
+			// 하단 post 리스트 뿌리기 위해서
+			// 제일 최근에 만들어진 카테고리에 대한 post 리스트 뽑아오기
+			List<PostVo> postList = postService.getList(categoryNo);
+			model.addAttribute("postList", postList);
+			System.out.println("카테고리 post list>> " + postList);	
 			
 			return urlMapped(id, "blog/blog-main", model);
 		}
 		
-		// 아무것도 없을경우 error
+		// 아무것도 없을경우 jblog-main으로 감..
 		return "";
 	}
 
@@ -184,7 +185,7 @@ public class BlogController {
 				
 		postService.insert(postVo, category, userId);
 		
-		return urlMapped(userId, "blog/blog-main", model);
+		return urlMapped(userId, "redirect:/"+userId, model);
 	}
 	
 	public String urlMapped(String id, String viewName, Model model) { // parameter는 접속할 블로그 user의 id

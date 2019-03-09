@@ -23,4 +23,9 @@ public class UserDao {
 	public Long getNo(String userId) {
 		return sqlSession.selectOne("user.getNoById", userId);
 	}
+	
+	// 회원가입 시 이메일 존재유무 확인 method
+	public UserVo get(String id) {
+		return sqlSession.selectOne("user.getByEmail", id);
+	}
 }
