@@ -1,6 +1,5 @@
 package com.douzone.jblog.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.douzone.dto.JSONResult;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.service.CategoryService;
+import com.douzone.jblog.service.CommentService;
 import com.douzone.jblog.service.FileUploadService;
 import com.douzone.jblog.service.PostService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.CommentVo;
 import com.douzone.jblog.vo.PostVo;
 
 @Controller
@@ -38,6 +39,8 @@ public class BlogController {
 	private CategoryService categoryService;
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private CommentService commentService;
 
 	@RequestMapping({ "", "/{category}","/{category}/{post}" })
 	public String mappingParameter(
@@ -61,15 +64,26 @@ public class BlogController {
 		// post비교
 		if(post.isPresent()) {
 			long postNo = post.get();
+			
 			PostVo postVo = postService.getPost(postNo);
 			model.addAttribute("post", postVo);
 			System.out.println("post가져오기>>" + postVo);
+			
+			// 해당 post의 comment 가져오기
+			List<CommentVo> commentList = commentService.get(postNo);
+			model.addAttribute("commentList", commentList);
+			System.out.println("commentList....." + commentList);
 		} else {
 			// 메인 글을 뿌리기 위해서
 			// 제일 최근에 만들어진 카테고리의 제일 최근에 적힌 post 가져오기
 			PostVo postVo  = postService.getLastPost(categoryNo); // 마지막 글 가져오기
 			model.addAttribute("post", postVo);
-			System.out.println("카테고리 최근 추가 글 >> " + postVo);			
+			System.out.println("카테고리 최근 추가 글 >> " + postVo);
+
+			// 해당 post의 comment 가져오기
+			List<CommentVo> commentList = commentService.get(postVo.getNo());
+			model.addAttribute("commentList", commentList);
+			System.out.println("commentList....." + commentList);
 		}
 		
 		if (!id.isEmpty()) { // id가 있다면..
@@ -186,6 +200,15 @@ public class BlogController {
 		postService.insert(postVo, category, userId);
 		
 		return urlMapped(userId, "redirect:/"+userId, model);
+	}
+	
+	@RequestMapping("/comment/insert")
+	@ResponseBody
+	public JSONResult commentInsert(@RequestParam("content")String content, @RequestParam("postNo")Long postNo) {
+		System.out.println("content: " + content);
+		System.out.println("postNo: " + postNo);
+		return null;
+//		return JSONResult.success(data);
 	}
 	
 	public String urlMapped(String id, String viewName, Model model) { // parameter는 접속할 블로그 user의 id

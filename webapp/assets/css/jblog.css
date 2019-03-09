@@ -46,6 +46,32 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 .welcome-message span:after						{ content: url(/jblog/assets/images/bul2.gif);}		
 
 
+.tbl-ex		{
+	width:100%;
+	margin:10px auto; 
+	border-collapse:collapse;
+	border-bottom:2px solid #333;
+}
+
+.tbl-ex th, 
+.tbl-ex td	{ 
+	padding:8px;
+	text-align:center; 	 
+}
+	
+.tbl-ex th	{ 
+	border-top:2px solid #333;
+	border-bottom:2px solid #333; 
+	background-color:#999; 
+	font-size:1.1em; 
+	color:#fff 
+}
+
+.tbl-ex td {
+	border-top:1px dotted #333;
+	border-bottom:1px dotted #333; 
+}
+
 
 div#container				{ width:920px; margin:0 auto }
 div#header					{ height:120px; background: #5394CC;  }
