@@ -81,9 +81,9 @@ public class BlogController {
 			System.out.println("카테고리 최근 추가 글 >> " + postVo);
 
 			// 해당 post의 comment 가져오기
-			List<CommentVo> commentList = commentService.get(postVo.getNo());
-			model.addAttribute("commentList", commentList);
-			System.out.println("commentList....." + commentList);
+//			List<CommentVo> commentList = commentService.get(postVo.getNo());
+//			model.addAttribute("commentList", commentList);
+//			System.out.println("commentList....." + commentList);
 		}
 		
 		if (!id.isEmpty()) { // id가 있다면..
@@ -93,9 +93,9 @@ public class BlogController {
 
 			// 하단 post 리스트 뿌리기 위해서
 			// 제일 최근에 만들어진 카테고리에 대한 post 리스트 뽑아오기
-			List<PostVo> postList = postService.getList(categoryNo);
-			model.addAttribute("postList", postList);
-			System.out.println("카테고리 post list>> " + postList);	
+//			List<PostVo> postList = postService.getList(categoryNo);
+//			model.addAttribute("postList", postList);
+//			System.out.println("카테고리 post list>> " + postList);	
 			
 			return urlMapped(id, "blog/blog-main", model);
 		}
