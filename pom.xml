@@ -133,6 +133,7 @@
 		</dependency>
 	</dependencies>
 	
+
 	<profiles>
 		<profile>
 			<id>production</id>
@@ -172,7 +173,6 @@
 			</dependencies>
 		</profile>
 	</profiles>
-
 
 	<build>
 		<plugins>
