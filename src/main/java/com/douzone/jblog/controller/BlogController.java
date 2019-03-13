@@ -202,15 +202,15 @@ public class BlogController {
 		return urlMapped(userId, "redirect:/"+userId, model);
 	}
 	
-	@RequestMapping("/comment/insert")
-	@ResponseBody
-	public JSONResult commentInsert(@RequestParam("content")String content, @RequestParam("postNo")Long postNo) {
-		System.out.println("content: " + content);
-		System.out.println("postNo: " + postNo);
-		return null;
-//		return JSONResult.success(data);
-	}
-	
+//	@RequestMapping("/comment/insert")
+//	@ResponseBody
+//	public JSONResult commentInsert(@RequestParam("content")String content, @RequestParam("postNo")Long postNo) {
+//		System.out.println("content: " + content);
+//		System.out.println("postNo: " + postNo);
+//		return null;
+////		return JSONResult.success(data);
+//	}
+//	
 	public String urlMapped(String id, String viewName, Model model) { // parameter는 접속할 블로그 user의 id
 		BlogVo vo = blogService.getBlogInfo(id);
 		System.out.println(vo);
